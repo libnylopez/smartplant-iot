@@ -19,3 +19,16 @@ frontend/dist/
 # Sistema
 .DS_Store
 Thumbs.db
+
+# Python cache
+**/__pycache__/
+
+# Entornos virtuales
+venv/
+.env
+
+# Vite
+frontend/.vite/
+
+# Archivos del sistema
+*.DS_Store
