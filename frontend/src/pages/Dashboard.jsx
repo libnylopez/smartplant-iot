@@ -27,7 +27,7 @@ function Dashboard() {
         const ultima = response.data[response.data.length - 1];
 
         setHumedadActual(
-          ultima.humedad || ultima.valor || 0
+          ultima.humedad_porcentaje || 0
         );
       }
     } catch (error) {
@@ -263,25 +263,25 @@ function Dashboard() {
                     >
 
                       <td className="py-4">
-                        {lectura.fecha}
+                        {lectura.fecha_registro}
                       </td>
 
                       <td className="py-4 font-semibold">
-                        {lectura.humedad}%
+                        {lectura.humedad_porcentaje}%
                       </td>
 
                       <td className="py-4">
 
                         <span
                           className={`px-3 py-1 rounded-full text-sm font-medium ${
-                            lectura.humedad >= 40
+                            lectura.humedad_porcentaje >= 40
                               ? "bg-green-100 text-green-700"
-                              : lectura.humedad >= 25
+                              : lectura.humedad_porcentaje >= 25
                               ? "bg-yellow-100 text-yellow-700"
                               : "bg-red-100 text-red-700"
                           }`}
                         >
-                          {lectura.estado}
+                          {lectura.estado_sensor}
                         </span>
 
                       </td>

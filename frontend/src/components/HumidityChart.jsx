@@ -25,7 +25,10 @@ function HumidityChart({ lecturas }) {
 
   const data = {
     labels: lecturas.map(
-      (item) => item.fecha
+      (item) =>
+        item.fecha_registro
+          ? item.fecha_registro.substring(11, 19)
+          : "Sin fecha"
     ),
 
     datasets: [
@@ -33,7 +36,7 @@ function HumidityChart({ lecturas }) {
         label: "Humedad (%)",
 
         data: lecturas.map(
-          (item) => item.humedad
+          (item) => item.humedad_porcentaje
         ),
 
         borderColor: "#16a34a",

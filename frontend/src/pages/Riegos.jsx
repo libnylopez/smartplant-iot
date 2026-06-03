@@ -1,24 +1,32 @@
+import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
+import api from "../services/api";
 
 function Riegos() {
 
-  const historialRiego = [
-    {
-      fecha: "2026-05-25",
-      hora: "08:30",
-      duracion: "10 seg"
-    },
-    {
-      fecha: "2026-05-26",
-      hora: "09:15",
-      duracion: "12 seg"
-    },
-    {
-      fecha: "2026-05-27",
-      hora: "07:50",
-      duracion: "8 seg"
+  const [riegos, setRiegos] = useState([]);
+
+  useEffect(() => {
+
+    obtenerRiegos();
+
+  }, []);
+
+  const obtenerRiegos = async () => {
+
+    try {
+
+      const response = await api.get("/riegos");
+
+      setRiegos(response.data);
+
+    } catch (error) {
+
+      console.error(error);
+
     }
-  ];
+
+  };
 
   return (
     <div className="flex min-h-screen bg-slate-100">
@@ -60,7 +68,9 @@ function Riegos() {
             </h3>
 
             <p className="text-4xl font-bold text-blue-600 mt-4">
-              15 seg
+              {riegos.length > 0
+                ? `${riegos[0].duracion_segundos} seg`
+                : "--"}
             </p>
 
           </div>
@@ -72,7 +82,7 @@ function Riegos() {
             </h3>
 
             <p className="text-4xl font-bold text-green-600 mt-4">
-              24
+              {riegos.length}
             </p>
 
           </div>
@@ -106,15 +116,19 @@ function Riegos() {
               <tr className="border-b">
 
                 <th className="text-left py-3">
-                  Fecha
+                  Fecha Inicio
                 </th>
 
                 <th className="text-left py-3">
-                  Hora
+                  Fecha Fin
                 </th>
 
                 <th className="text-left py-3">
                   Duración
+                </th>
+
+                <th className="text-left py-3">
+                  Estado
                 </th>
 
               </tr>
@@ -123,23 +137,27 @@ function Riegos() {
 
             <tbody>
 
-              {historialRiego.map((item, index) => (
+              {riegos.map((riego) => (
 
                 <tr
-                  key={index}
+                  key={riego.id}
                   className="border-b"
                 >
 
                   <td className="py-4">
-                    {item.fecha}
+                    {riego.fecha_inicio}
                   </td>
 
                   <td className="py-4">
-                    {item.hora}
+                    {riego.fecha_fin}
                   </td>
 
                   <td className="py-4">
-                    {item.duracion}
+                    {riego.duracion_segundos} seg
+                  </td>
+
+                  <td className="py-4">
+                    {riego.estado}
                   </td>
 
                 </tr>

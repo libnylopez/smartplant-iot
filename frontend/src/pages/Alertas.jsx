@@ -1,29 +1,72 @@
+import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
+import api from "../services/api";
 
 function Alertas() {
 
-  const alertasDemo = [
-    {
-      tipo: "Crítica",
-      mensaje: "Humedad baja detectada",
-      fecha: "2026-05-28 08:30",
-    },
-    {
-      tipo: "Información",
-      mensaje: "Riego automático activado",
-      fecha: "2026-05-28 08:31",
-    },
-    {
-      tipo: "Sistema",
-      mensaje: "Sensor conectado correctamente",
-      fecha: "2026-05-29 07:00",
-    },
-    {
-      tipo: "Advertencia",
-      mensaje: "Nivel de humedad por debajo del óptimo",
-      fecha: "2026-05-29 09:15",
-    },
-  ];
+  const [alertas, setAlertas] = useState([]);
+
+  useEffect(() => {
+
+    cargarAlertas();
+
+  }, []);
+
+  const cargarAlertas = async () => {
+
+    try {
+
+      const response = await api.get("/lecturas");
+
+      const datos = response.data;
+
+      const alertasGeneradas = datos.map((lectura) => {
+
+        let tipo = "Información";
+        let mensaje = "Nivel de humedad óptimo";
+
+        if (lectura.humedad_porcentaje < 25) {
+
+          tipo = "Crítica";
+          mensaje = "Humedad muy baja detectada";
+
+        } else if (lectura.humedad_porcentaje < 40) {
+
+          tipo = "Advertencia";
+          mensaje = "Nivel de humedad por debajo del óptimo";
+
+        }
+
+        return {
+          tipo,
+          mensaje,
+          fecha: lectura.fecha_registro,
+          humedad: lectura.humedad_porcentaje,
+        };
+
+      });
+
+      setAlertas(alertasGeneradas);
+
+    } catch (error) {
+
+      console.error(error);
+
+    }
+
+  };
+
+  const criticas = alertas.filter(
+    (a) => a.tipo === "Crítica"
+  ).length;
+
+  const advertencias = alertas.filter(
+    (a) => a.tipo === "Advertencia"
+  ).length;
+
+  const informativas = alertas.filter(
+    (a) => a.tipo === "Información"
+  ).length;
 
   return (
     <div className="flex min-h-screen bg-slate-100">
@@ -53,7 +96,7 @@ function Alertas() {
             </h3>
 
             <p className="text-4xl font-bold text-red-600 mt-2">
-              2
+              {criticas}
             </p>
 
           </div>
@@ -65,7 +108,7 @@ function Alertas() {
             </h3>
 
             <p className="text-4xl font-bold text-yellow-600 mt-2">
-              3
+              {advertencias}
             </p>
 
           </div>
@@ -77,7 +120,7 @@ function Alertas() {
             </h3>
 
             <p className="text-4xl font-bold text-green-600 mt-2">
-              12
+              {informativas}
             </p>
 
           </div>
@@ -105,6 +148,10 @@ function Alertas() {
                 </th>
 
                 <th className="text-left py-4">
+                  Humedad
+                </th>
+
+                <th className="text-left py-4">
                   Fecha
                 </th>
 
@@ -114,7 +161,7 @@ function Alertas() {
 
             <tbody>
 
-              {alertasDemo.map((alerta, index) => (
+              {alertas.map((alerta, index) => (
 
                 <tr
                   key={index}
@@ -139,6 +186,10 @@ function Alertas() {
 
                   <td className="py-4">
                     {alerta.mensaje}
+                  </td>
+
+                  <td className="py-4">
+                    {alerta.humedad}%
                   </td>
 
                   <td className="py-4">

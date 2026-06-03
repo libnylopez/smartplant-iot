@@ -1,36 +1,35 @@
+import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
+import api from "../services/api";
 
 function Historial() {
 
-  const datosDemo = [
-    {
-      fecha: "2026-05-25",
-      humedad: 42,
-      estado: "Óptimo",
-    },
-    {
-      fecha: "2026-05-26",
-      humedad: 38,
-      estado: "Óptimo",
-    },
-    {
-      fecha: "2026-05-27",
-      humedad: 31,
-      estado: "Aceptable",
-    },
-    {
-      fecha: "2026-05-28",
-      humedad: 24,
-      estado: "Seco",
-    },
-    {
-      fecha: "2026-05-29",
-      humedad: 47,
-      estado: "Óptimo",
-    },
-  ];
+  const [lecturas, setLecturas] = useState([]);
+
+  useEffect(() => {
+
+    obtenerLecturas();
+
+  }, []);
+
+  const obtenerLecturas = async () => {
+
+    try {
+
+      const response = await api.get("/lecturas");
+
+      setLecturas(response.data);
+
+    } catch (error) {
+
+      console.error("Error obteniendo lecturas:", error);
+
+    }
+
+  };
 
   return (
+
     <div className="flex min-h-screen bg-slate-100">
 
       <Sidebar />
@@ -38,6 +37,7 @@ function Historial() {
       <main className="flex-1 p-8">
 
         <div className="mb-8">
+
           <h1 className="text-4xl font-bold text-slate-800">
             Historial de Lecturas
           </h1>
@@ -45,6 +45,7 @@ function Historial() {
           <p className="text-slate-500 mt-2">
             Registro histórico de humedad del sistema SmartPlant IoT
           </p>
+
         </div>
 
         <div className="bg-white rounded-xl shadow p-6">
@@ -72,7 +73,7 @@ function Historial() {
               <tr className="border-b">
 
                 <th className="text-left py-4">
-                  Fecha
+                  ID
                 </th>
 
                 <th className="text-left py-4">
@@ -83,41 +84,49 @@ function Historial() {
                   Estado
                 </th>
 
+                <th className="text-left py-4">
+                  Fecha
+                </th>
+
               </tr>
 
             </thead>
 
             <tbody>
 
-              {datosDemo.map((item, index) => (
+              {lecturas.map((lectura) => (
 
                 <tr
-                  key={index}
+                  key={lectura.id}
                   className="border-b hover:bg-slate-50"
                 >
 
                   <td className="py-4">
-                    {item.fecha}
+                    {lectura.id}
                   </td>
 
                   <td className="py-4 font-semibold">
-                    {item.humedad}%
+                    {lectura.humedad_porcentaje}%
                   </td>
 
                   <td className="py-4">
 
                     <span
                       className={`px-3 py-1 rounded-full text-sm font-medium ${
-                        item.humedad >= 40
+                        lectura.humedad_porcentaje >= 40
                           ? "bg-green-100 text-green-700"
-                          : item.humedad >= 25
+                          : lectura.humedad_porcentaje >= 25
                           ? "bg-yellow-100 text-yellow-700"
                           : "bg-red-100 text-red-700"
                       }`}
                     >
-                      {item.estado}
+                      {lectura.estado_sensor}
                     </span>
 
+                  </td>
+
+                  <td className="py-4">
+                    {lectura.fecha_registro || "Sin fecha"}
                   </td>
 
                 </tr>
@@ -133,6 +142,7 @@ function Historial() {
       </main>
 
     </div>
+
   );
 }
 

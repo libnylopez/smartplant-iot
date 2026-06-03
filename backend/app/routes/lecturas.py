@@ -1,34 +1,33 @@
 from fastapi import APIRouter
+from sqlalchemy import select
+
+from app.core.database import SessionLocal
+from app.models.lectura import Lectura
 
 router = APIRouter()
+
 
 @router.get("/")
 def obtener_lecturas():
 
-    return [
+    db = SessionLocal()
 
-        {
-            "fecha": "2026-05-25",
-            "humedad": 42,
-            "estado": "Optimo"
-        },
+    try:
 
-        {
-            "fecha": "2026-05-26",
-            "humedad": 38,
-            "estado": "Optimo"
-        },
+        lecturas = db.execute(
+            select(Lectura)
+        ).scalars().all()
 
-        {
-            "fecha": "2026-05-27",
-            "humedad": 31,
-            "estado": "Optimo"
-        },
+        return [
+            {
+                "id": lectura.id,
+                "planta_id": lectura.planta_id,
+                "humedad_porcentaje": lectura.humedad_porcentaje,
+                "estado_sensor": lectura.estado_sensor,
+                "fecha_registro": lectura.fecha_registro
+            }
+            for lectura in lecturas
+        ]
 
-        {
-            "fecha": "2026-05-28",
-            "humedad": 24,
-            "estado": "Seco"
-        }
-
-    ]
+    finally:
+        db.close()
