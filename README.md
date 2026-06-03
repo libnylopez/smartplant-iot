@@ -1,138 +1,284 @@
-## Guía de Integración para Hardware y Datos Reales
+# SmartPlant IoT
 
-### Estado Actual de la Aplicación
+## Descripción
 
-Actualmente el sistema se encuentra completamente funcional a nivel de interfaz y estructura de software.
+SmartPlant IoT es un sistema de monitoreo inteligente de plantas basado en Raspberry Pi, FastAPI, React y MySQL.
 
-Sin embargo, los datos mostrados en el frontend son datos simulados utilizados para pruebas de desarrollo.
+El proyecto permite monitorear la humedad del suelo, visualizar información histórica, generar alertas automáticas y administrar eventos de riego mediante una interfaz web moderna.
 
-La arquitectura ya se encuentra preparada para recibir datos reales provenientes de una Raspberry Pi y almacenarlos en una base de datos MySQL.
-
----
-
-### Componentes que Actualmente Utilizan Datos Simulados
-
-Frontend:
-
-```text
-frontend/src/pages/Dashboard.jsx
-frontend/src/pages/Historial.jsx
-frontend/src/pages/Alertas.jsx
-frontend/src/pages/Riegos.jsx
-```
-
-Backend:
-
-```text
-backend/app/services/dashboard_service.py
-```
-
-Estos archivos pueden contener datos de ejemplo utilizados para pruebas visuales y demostración del funcionamiento del sistema.
+Actualmente el sistema cuenta con integración funcional entre React, FastAPI y MySQL para desarrollo local.
 
 ---
 
-### Configuración de Base de Datos Real
+## Arquitectura General
 
-La configuración de conexión debe realizarse en:
+Sensor de Humedad
+
+↓
+
+Raspberry Pi
+
+↓
+
+MQTT / HTTP
+
+↓
+
+Backend FastAPI
+
+↓
+
+MySQL
+
+↓
+
+Frontend React
+
+---
+
+## Tecnologías Utilizadas
+
+### Frontend
+
+* React
+* Vite
+* JavaScript
+* Axios
+* Chart.js
+* CSS
+
+### Backend
+
+* Python
+* FastAPI
+* SQLAlchemy
+* PyMySQL
+
+### Base de Datos
+
+* MySQL
+
+### IoT
+
+* Raspberry Pi
+* Sensor de humedad capacitivo
+* Relés
+* Bomba de agua
+* MQTT
+
+---
+
+## Estado Actual del Proyecto
+
+### Integración Completada
+
+* MySQL local funcional
+* FastAPI conectado a MySQL
+* SQLAlchemy configurado
+* Dashboard conectado a base de datos
+* Historial conectado a base de datos
+* Alertas conectadas a base de datos
+* Riegos conectados a base de datos
+* Gráfica de humedad conectada a base de datos
+* API REST funcional
+* Arquitectura backend organizada
+
+### Pendiente
+
+* Integración de Raspberry Pi con datos reales
+* Comunicación MQTT en tiempo real
+* Base de datos en la nube
+* Despliegue del sistema
+* Automatización completa del flujo IoT
+
+---
+
+## Estructura de Base de Datos
+
+Base de datos utilizada:
 
 ```text
-backend/app/core/config.py
-backend/app/core/database.py
+riego_iot
+```
+
+Tablas implementadas:
+
+### plantas
+
+Información general de las plantas registradas.
+
+### lecturas_humedad
+
+Historial de lecturas del sensor de humedad.
+
+### riegos
+
+Historial de activaciones del sistema de riego.
+
+---
+
+## Configuración del Backend
+
+Ingresar al directorio backend:
+
+```bash
+cd backend
+```
+
+Crear entorno virtual:
+
+### Windows
+
+```bash
+python -m venv venv
+```
+
+Activar entorno:
+
+```bash
+venv\Scripts\activate
+```
+
+### macOS / Linux
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+Instalar dependencias:
+
+```bash
+pip install -r requirements.txt
+```
+
+Ejecutar servidor:
+
+```bash
+uvicorn app.main:app --reload
+```
+
+Swagger:
+
+```text
+http://localhost:8000/docs
+```
+
+---
+
+## Configuración del Frontend
+
+Ingresar al directorio frontend:
+
+```bash
+cd frontend
+```
+
+Instalar dependencias:
+
+```bash
+npm install
+```
+
+Ejecutar:
+
+```bash
+npm run dev
+```
+
+Abrir:
+
+```text
+http://localhost:5173
+```
+
+---
+
+## Variables de Entorno
+
+Archivo:
+
+```text
 backend/.env
 ```
 
-Variables recomendadas:
+Configuración local:
 
 ```env
-DB_HOST=
-DB_PORT=
-DB_USER=
-DB_PASSWORD=
-DB_NAME=
-```
-
-Una vez configuradas las credenciales reales, los modelos existentes pueden utilizarse para conectarse a MySQL.
-
-Modelos disponibles:
-
-```text
-backend/app/models/planta.py
-backend/app/models/lectura.py
-backend/app/models/riego.py
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=riego_iot
+DB_USER=root
+DB_PASSWORD=TU_CONTRASEÑA
 ```
 
 ---
 
-### Integración de la Raspberry Pi
+## Endpoints Disponibles
 
-La Raspberry Pi deberá encargarse de:
+### Dashboard
 
-1. Leer datos del sensor de humedad.
-2. Procesar los valores obtenidos.
-3. Enviar la información al backend mediante HTTP o MQTT.
+```text
+/dashboard
+```
+
+### Lecturas
+
+```text
+/lecturas
+```
+
+### Riegos
+
+```text
+/riegos
+```
+
+### Prueba de Conexión
+
+```text
+/test-db
+```
+
+---
+
+## Integración de Hardware
+
+La integración con Raspberry Pi se encuentra pendiente de conexión definitiva.
 
 Flujo esperado:
 
 Sensor de Humedad
+
 ↓
+
 Raspberry Pi
+
 ↓
-HTTP / MQTT
+
+MQTT / HTTP
+
 ↓
+
 FastAPI
+
 ↓
+
 MySQL
+
 ↓
-Frontend
+
+Dashboard Web
 
 ---
 
-### Endpoints Disponibles
+## Estado de Desarrollo
 
-Las rutas del backend se encuentran organizadas en:
+Actualmente el sistema ya utiliza datos almacenados en MySQL para:
 
-```text
-backend/app/routes/
-```
+* Dashboard
+* Historial
+* Alertas
+* Riegos
 
-Módulos implementados:
-
-```text
-dashboard.py
-lecturas.py
-plantas.py
-riegos.py
-```
-
-Estas rutas pueden utilizarse para recibir datos provenientes de la Raspberry Pi y posteriormente exponerlos al frontend.
-
----
-
-### Integración del Frontend con la API
-
-La configuración centralizada de peticiones se encuentra en:
-
-```text
-frontend/src/services/api.js
-```
-
-Se recomienda utilizar este archivo para realizar todas las llamadas al backend y evitar URLs distribuidas en múltiples componentes.
-
----
-
-### Próximos Pasos Recomendados
-
-1. Configurar MySQL real.
-2. Completar variables de entorno.
-3. Conectar Raspberry Pi mediante HTTP o MQTT.
-4. Sustituir datos simulados por respuestas reales de la API.
-5. Validar inserción de lecturas en la tabla lecturas_humedad.
-6. Validar inserción de eventos en la tabla riegos.
-7. Actualizar Dashboard, Historial, Alertas y Riegos para consumir datos reales.
-8. Implementar actualización en tiempo real mediante MQTT o polling periódico.
-
----
-
-### Observación
-
-La estructura general del proyecto ya fue diseñada para soportar la integración completa del sistema IoT sin necesidad de modificar la arquitectura principal del frontend ni del backend.
+La siguiente fase del proyecto consiste en sustituir los datos de prueba por información proveniente directamente de la Raspberry Pi y del sensor de humedad en tiempo real.
