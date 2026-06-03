@@ -1,16 +1,16 @@
-# SmartPlant IoT
+# Verdant
 
-## Descripción
+### Intelligent Plant Monitoring Platform
 
-SmartPlant IoT es un sistema de monitoreo inteligente de plantas basado en Raspberry Pi, FastAPI, React y MySQL.
+Verdant es una plataforma inteligente de monitoreo de plantas diseñada para visualizar, analizar y gestionar información proveniente de sensores de humedad mediante una interfaz web moderna y una arquitectura IoT escalable.
 
-El proyecto permite monitorear la humedad del suelo, visualizar información histórica, generar alertas automáticas y administrar eventos de riego mediante una interfaz web moderna.
+El sistema integra tecnologías de desarrollo web, bases de datos relacionales y dispositivos IoT para proporcionar monitoreo en tiempo real, alertas automáticas y control de eventos de riego.
 
-Actualmente el sistema cuenta con integración funcional entre React, FastAPI y MySQL para desarrollo local.
+Actualmente Verdant cuenta con integración funcional entre React, FastAPI y MySQL para desarrollo local, permitiendo almacenar y visualizar datos desde una base de datos relacional.
 
 ---
 
-## Arquitectura General
+# Arquitectura General
 
 Sensor de Humedad
 
@@ -32,68 +32,93 @@ MySQL
 
 ↓
 
-Frontend React
+Frontend React (Verdant)
 
 ---
 
-## Tecnologías Utilizadas
+# Tecnologías Utilizadas
 
-### Frontend
+## Frontend
 
 * React
 * Vite
-* JavaScript
 * Axios
 * Chart.js
 * CSS
 
-### Backend
+## Backend
 
 * Python
 * FastAPI
 * SQLAlchemy
 * PyMySQL
 
-### Base de Datos
+## Base de Datos
 
 * MySQL
 
-### IoT
+## IoT
 
 * Raspberry Pi
 * Sensor de humedad capacitivo
-* Relés
-* Bomba de agua
 * MQTT
+* Relés
+* Sistema de riego automático
 
 ---
 
-## Estado Actual del Proyecto
+# Estado Actual del Proyecto
 
-### Integración Completada
+## Integración Completada
 
-* MySQL local funcional
-* FastAPI conectado a MySQL
-* SQLAlchemy configurado
+* Frontend React funcional
+* Backend FastAPI funcional
+* Base de datos MySQL local configurada
+* Integración SQLAlchemy con MySQL
 * Dashboard conectado a base de datos
 * Historial conectado a base de datos
 * Alertas conectadas a base de datos
-* Riegos conectados a base de datos
-* Gráfica de humedad conectada a base de datos
+* Módulo de Riego conectado a base de datos
+* Visualización gráfica de humedad conectada a base de datos
 * API REST funcional
 * Arquitectura backend organizada
+* Integración local completa (React → FastAPI → MySQL)
 
-### Pendiente
+## Pendiente
 
 * Integración de Raspberry Pi con datos reales
 * Comunicación MQTT en tiempo real
-* Base de datos en la nube
-* Despliegue del sistema
+* Integración con infraestructura en la nube
 * Automatización completa del flujo IoT
+* Despliegue de producción
 
 ---
 
-## Estructura de Base de Datos
+# Características Principales
+
+## Resumen
+
+Visualización general del estado de la planta, humedad actual, tendencias históricas y métricas principales del sistema.
+
+## Historial
+
+Consulta de lecturas almacenadas en la base de datos con visualización estructurada y filtrado.
+
+## Alertas
+
+Generación automática de alertas según niveles de humedad detectados.
+
+## Riego
+
+Registro histórico de activaciones del sistema de riego y monitoreo de eventos.
+
+## Visualización Inteligente
+
+Representación visual del estado general de la planta basada en los niveles de humedad registrados.
+
+---
+
+# Estructura de Base de Datos
 
 Base de datos utilizada:
 
@@ -103,21 +128,21 @@ riego_iot
 
 Tablas implementadas:
 
-### plantas
+## plantas
 
 Información general de las plantas registradas.
 
-### lecturas_humedad
+## lecturas_humedad
 
 Historial de lecturas del sensor de humedad.
 
-### riegos
+## riegos
 
 Historial de activaciones del sistema de riego.
 
 ---
 
-## Configuración del Backend
+# Configuración del Backend
 
 Ingresar al directorio backend:
 
@@ -158,7 +183,7 @@ Ejecutar servidor:
 uvicorn app.main:app --reload
 ```
 
-Swagger:
+Documentación Swagger:
 
 ```text
 http://localhost:8000/docs
@@ -166,7 +191,7 @@ http://localhost:8000/docs
 
 ---
 
-## Configuración del Frontend
+# Configuración del Frontend
 
 Ingresar al directorio frontend:
 
@@ -180,13 +205,13 @@ Instalar dependencias:
 npm install
 ```
 
-Ejecutar:
+Ejecutar aplicación:
 
 ```bash
 npm run dev
 ```
 
-Abrir:
+Abrir en navegador:
 
 ```text
 http://localhost:5173
@@ -194,7 +219,7 @@ http://localhost:5173
 
 ---
 
-## Variables de Entorno
+# Variables de Entorno
 
 Archivo:
 
@@ -214,27 +239,27 @@ DB_PASSWORD=TU_CONTRASEÑA
 
 ---
 
-## Endpoints Disponibles
+# Endpoints Disponibles
 
-### Dashboard
+## Dashboard
 
 ```text
 /dashboard
 ```
 
-### Lecturas
+## Lecturas
 
 ```text
 /lecturas
 ```
 
-### Riegos
+## Riegos
 
 ```text
 /riegos
 ```
 
-### Prueba de Conexión
+## Prueba de Conexión
 
 ```text
 /test-db
@@ -242,9 +267,11 @@ DB_PASSWORD=TU_CONTRASEÑA
 
 ---
 
-## Integración de Hardware
+# Integración de Hardware
 
-La integración con Raspberry Pi se encuentra pendiente de conexión definitiva.
+Actualmente el frontend y backend se encuentran conectados a MySQL local para pruebas y desarrollo.
+
+La siguiente fase del proyecto consiste en sustituir los datos de prueba por información proveniente directamente de la Raspberry Pi y del sensor de humedad mediante MQTT o HTTP.
 
 Flujo esperado:
 
@@ -268,17 +295,24 @@ MySQL
 
 ↓
 
-Dashboard Web
+Verdant
 
 ---
 
-## Estado de Desarrollo
+# Próxima Fase
 
-Actualmente el sistema ya utiliza datos almacenados en MySQL para:
+* Integración con Raspberry Pi.
+* Integración con MQTT.
+* Integración con base de datos en la nube.
+* Recepción de lecturas reales desde sensores.
+* Automatización completa del sistema de riego.
+* Despliegue del sistema en entorno productivo.
 
-* Dashboard
-* Historial
-* Alertas
-* Riegos
+---
 
-La siguiente fase del proyecto consiste en sustituir los datos de prueba por información proveniente directamente de la Raspberry Pi y del sensor de humedad en tiempo real.
+# Estado de Desarrollo
+
+Actualmente Verdant dispone de una arquitectura funcional completa para desarrollo local.
+
+La plataforma ya permite almacenar, consultar y visualizar datos desde MySQL mediante React y FastAPI. La integración pendiente corresponde principalmente a la capa IoT (Raspberry Pi, MQTT y nube), la cual permitirá sustituir los datos de prueba por lecturas reales provenientes del sensor de humedad.
+
