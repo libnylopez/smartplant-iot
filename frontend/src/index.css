@@ -1,1 +1,266 @@
 @import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════
+   VERDANT — Plataforma Inteligente de Monitoreo
+   Sistema de Diseño v3
+═══════════════════════════════════════════════════ */
+
+:root {
+  --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+
+  /* ── Fondos ── */
+  --bg:        #F4F3F0;   /* página — piedra cálida */
+  --surface:   #FFFFFF;   /* tarjetas */
+  --surface-2: #F0EFEc;   /* filas hover, fondos anidados */
+
+  /* ── Bordes ── */
+  --border:    rgba(0, 0, 0, 0.09);
+  --border-sm: rgba(0, 0, 0, 0.05);
+
+  /* ── Texto ── */
+  --t1: #111111;
+  --t2: #555555;
+  --t3: #999999;
+  --t4: #CCCCCC;
+
+  /* ── Verde — color de marca y estado ── */
+  --green:    #16A34A;
+  --green-d:  #15803D;
+  --green-bg: rgba(22, 163, 74, 0.07);
+
+  /* ── Estado: advertencia ── */
+  --amber:    #92400E;
+  --amber-bg: rgba(180, 83, 9, 0.06);
+
+  /* ── Estado: crítico ── */
+  --red:      #991B1B;
+  --red-bg:   rgba(153, 27, 27, 0.06);
+
+  /* ── Sombras ── */
+  --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.10), 0 0 0 1px rgba(0, 0, 0, 0.04);
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.6;
+  background: var(--bg);
+  color: var(--t1);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #D1D1D1; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #AAAAAA; }
+
+/* ════════════════════════
+   ANIMACIONES
+   ════════════════════════ */
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-fade-in-up { animation: fade-in-up 0.32s ease-out both; }
+.animate-fade-in    { animation: fade-in   0.22s ease-out both; }
+
+/* ════════════════════════
+   TARJETA BASE
+   ════════════════════════ */
+
+.vcard {
+  background: var(--surface);
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.18s ease;
+}
+
+/* Tarjeta interactiva: sube 2px al hacer hover */
+.vcard-lift {
+  background: var(--surface);
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  cursor: default;
+}
+
+.vcard-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ════════════════════════
+   PILLS DE ESTADO
+   ════════════════════════ */
+
+.vpill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 11px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+.vpill-success { background: var(--green-bg); color: var(--green); }
+.vpill-warning { background: var(--amber-bg); color: var(--amber); }
+.vpill-danger  { background: var(--red-bg);   color: var(--red);   }
+.vpill-neutral { background: rgba(0,0,0,0.04); color: var(--t2); }
+
+/* ════════════════════════
+   TABLA
+   ════════════════════════ */
+
+.vtable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.vtable th {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--t3);
+  padding: 10px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-sm);
+}
+
+.vtable td {
+  padding: 13px 20px;
+  font-size: 13px;
+  color: var(--t2);
+  border-bottom: 1px solid var(--border-sm);
+  transition: background 0.1s;
+}
+
+.vtable tr:last-child td { border-bottom: none; }
+
+.vtable tbody tr:hover td {
+  background: var(--surface-2);
+  color: var(--t1);
+}
+
+/* ════════════════════════
+   CAMPO DE TEXTO
+   ════════════════════════ */
+
+.vinput {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--t1);
+  font-family: var(--font);
+  font-size: 13px;
+  padding: 8px 12px;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.vinput::placeholder { color: var(--t4); }
+
+.vinput:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px var(--green-bg);
+}
+
+/* ════════════════════════
+   BOTONES
+   ════════════════════════ */
+
+.vbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+
+.vbtn-primary {
+  background: var(--green);
+  color: #fff;
+  font-weight: 600;
+}
+.vbtn-primary:hover { background: var(--green-d); }
+
+.vbtn-secondary {
+  background: var(--surface);
+  color: var(--t2);
+  border: 1px solid var(--border);
+}
+.vbtn-secondary:hover {
+  background: var(--surface-2);
+  color: var(--t1);
+}
+
+/* ════════════════════════
+   ENCABEZADO DE PÁGINA
+   ════════════════════════ */
+
+.vpage-header {
+  padding: 20px 36px 18px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.vpage-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--t1);
+  letter-spacing: -0.02em;
+}
+
+.vpage-subtitle {
+  margin: 1px 0 0;
+  font-size: 12px;
+  color: var(--t3);
+}
+
+/* ════════════════════════
+   CONTENIDO DE PÁGINA
+   ════════════════════════ */
+
+.vpage-content { padding: 28px 36px; }
+
+/* ════════════════════════
+   MONOESPACIADO (timestamps)
+   ════════════════════════ */
+
+.vmono {
+  font-family: "Menlo", "Monaco", "Cascadia Code", monospace;
+  font-size: 12px;
+}

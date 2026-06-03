@@ -1,91 +1,194 @@
-import { Link, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import {
+  LayoutGrid,
+  Clock,
+  Droplets,
+  Bell,
+  Leaf,
+} from "lucide-react";
 
-function Sidebar() {
-  const location = useLocation();
+const NAV = [
+  { to: "/",          icon: LayoutGrid, label: "Resumen",  end: true  },
+  { to: "/historial", icon: Clock,      label: "Historial", end: false },
+  { to: "/riegos",    icon: Droplets,   label: "Riego",    end: false },
+  { to: "/alertas",   icon: Bell,       label: "Alertas",  end: false },
+];
 
-  const menuItem = (path, icon, text) => (
-    <li>
-      <Link
-        to={path}
-        className={`block p-3 rounded-lg transition-all duration-200 ${
-          location.pathname === path
-            ? "bg-green-100 text-green-700 font-semibold shadow-sm"
-            : "hover:bg-slate-100 text-slate-700"
-        }`}
-      >
-        {icon} {text}
-      </Link>
-    </li>
-  );
+/* ── Colores del sidebar oscuro ── */
+const C = {
+  bg:          "#111111",
+  border:      "rgba(255,255,255,0.08)",
+  navInactive: "#888888",
+  navActive:   "#16A34A",
+  navActiveBg: "rgba(22, 163, 74, 0.12)",
+  label:       "rgba(255,255,255,0.22)",
+  dotOn:       "#16A34A",
+  metaText:    "#555555",
+  metaSub:     "#383838",
+  brand:       "#FFFFFF",
+  brandSub:    "#444444",
+};
 
+export default function Sidebar() {
   return (
-    <aside className="w-64 bg-white shadow-lg min-h-screen relative">
-
-      {/* Logo */}
-      <div className="p-6 border-b">
-
-        <h1 className="text-3xl font-bold text-green-600">
-          🌱 SmartPlant
-        </h1>
-
-        <p className="text-sm text-slate-500 mt-1">
-          Sistema IoT de Monitoreo
-        </p>
-
+    <aside
+      style={{
+        width: "210px",
+        flexShrink: 0,
+        display: "flex",
+        flexDirection: "column",
+        background: C.bg,
+        borderRight: `1px solid ${C.border}`,
+        position: "sticky",
+        top: 0,
+        height: "100vh",
+        overflowY: "auto",
+      }}
+    >
+      {/* ── Marca ── */}
+      <div style={{ padding: "22px 18px 16px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "9px" }}>
+          <div
+            style={{
+              width: "26px",
+              height: "26px",
+              background: "#16A34A",
+              borderRadius: "7px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+            }}
+          >
+            <Leaf size={13} color="#fff" strokeWidth={2.5} />
+          </div>
+          <div>
+            <div
+              style={{
+                fontSize: "14px",
+                fontWeight: 700,
+                color: C.brand,
+                letterSpacing: "-0.02em",
+                lineHeight: 1.2,
+              }}
+            >
+              Verdant
+            </div>
+            <div
+              style={{
+                fontSize: "10px",
+                color: C.brandSub,
+                lineHeight: 1.4,
+              }}
+            >
+              Monitoreo de plantas
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Menú */}
-      <nav className="p-6">
+      <div
+        style={{
+          height: "1px",
+          background: C.border,
+          margin: "0 16px",
+        }}
+      />
 
-        <ul className="space-y-3">
-
-          {menuItem("/", "📊", "Dashboard")}
-
-          {menuItem("/historial", "📈", "Historial")}
-
-          {menuItem("/riegos", "🚿", "Riegos")}
-
-          {menuItem("/alertas", "🚨", "Alertas")}
-
-          {menuItem("/configuracion", "⚙️", "Configuración")}
-
-        </ul>
-
-      </nav>
-
-      {/* Estado del sistema */}
-      <div className="absolute bottom-8 left-6 right-6">
-
-        <div className="bg-green-50 border border-green-100 p-4 rounded-xl">
-
-          <p className="text-sm text-gray-500">
-            Dispositivo Principal
-          </p>
-
-          <p className="font-semibold text-green-600 mt-1">
-            Raspberry Pi 4
-          </p>
-
-          <div className="flex items-center gap-2 mt-2">
-            <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-
-            <span className="text-sm text-green-600">
-              Conectado
-            </span>
-          </div>
-
-          <p className="text-xs text-gray-500 mt-3">
-            Última actualización:
-            <br />
-            hace 5 segundos
-          </p>
-
+      {/* ── Navegación ── */}
+      <nav style={{ flex: 1, padding: "10px 8px" }}>
+        <div
+          style={{
+            fontSize: "10px",
+            fontWeight: 600,
+            color: C.label,
+            letterSpacing: "0.07em",
+            textTransform: "uppercase",
+            padding: "8px 10px 6px",
+          }}
+        >
+          Secciones
         </div>
 
-      </div>
+        {NAV.map(({ to, icon: Icon, label, end }) => (
+          <NavLink
+            key={to}
+            to={to}
+            end={end}
+            style={({ isActive }) => ({
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              padding: "7px 10px",
+              borderRadius: "8px",
+              marginBottom: "1px",
+              textDecoration: "none",
+              fontSize: "13px",
+              fontWeight: isActive ? 600 : 400,
+              color: isActive ? C.navActive : C.navInactive,
+              background: isActive ? C.navActiveBg : "transparent",
+              transition: "all 0.12s",
+            })}
+          >
+            {({ isActive }) => (
+              <>
+                <Icon
+                  size={14}
+                  strokeWidth={isActive ? 2.5 : 2}
+                  style={{ flexShrink: 0 }}
+                />
+                <span>{label}</span>
+              </>
+            )}
+          </NavLink>
+        ))}
+      </nav>
 
+      {/* ── Estado del dispositivo ── */}
+      <div style={{ padding: "12px 18px 20px" }}>
+        <div
+          style={{
+            height: "1px",
+            background: C.border,
+            marginBottom: "14px",
+          }}
+        />
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            marginBottom: "6px",
+          }}
+        >
+          <div
+            style={{
+              width: "5px",
+              height: "5px",
+              borderRadius: "50%",
+              background: C.dotOn,
+              flexShrink: 0,
+            }}
+          />
+          <span
+            style={{
+              fontSize: "11px",
+              color: C.navActive,
+              fontWeight: 600,
+            }}
+          >
+            En línea
+          </span>
+        </div>
+
+        <div style={{ fontSize: "11px", color: C.metaText }}>
+          Raspberry Pi 4
+        </div>
+        <div style={{ fontSize: "11px", color: C.metaSub, marginTop: "2px" }}>
+          Actualiza cada 5 s
+        </div>
+      </div>
     </aside>
   );
 }
-
-export default Sidebar;
